@@ -36,51 +36,65 @@ print(ans)
 
 ans2 = 0
 
-for line in lines:
-    # dp = 12 x len(line) -> DP[i, j] = max number ending in digit j using first i digits
-    # print(len(line))
-    # dp = [[-1 for _ in range(12)] for _ in range(len(line) + 1)]
-    # print(len(dp))
-    # print(len(dp[0]))
-    # for i in dp:
-    #     print(i)
-    # print()
+# for line in lines:
+#     # dp = 12 x len(line) -> DP[i, j] = max number ending in digit j using first i digits
+#     # print(len(line))
+#     # dp = [[-1 for _ in range(12)] for _ in range(len(line) + 1)]
+#     # print(len(dp))
+#     # print(len(dp[0]))
+#     # for i in dp:
+#     #     print(i)
+#     # print()
     
-    # max number with i digits left to process with the first digit being j
-    dp_table = [[-1 for _ in range(len(line)+1)] for _ in range(13)]
+#     # max number with i digits left to process with the first digit being j
+#     dp_table = [[-1 for _ in range(len(line)+1)] for _ in range(13)]
     
     
-    def dp(i, j):
-        if dp_table[i][j] != -1:
-            return dp_table[i][j]
+#     def dp(i, j):
+#         if dp_table[i][j] != -1:
+#             return dp_table[i][j]
         
-        if i == 1:
-            dp_table[i][j] = int(line[j])
-            return dp_table[i][j]
+#         if i == 1:
+#             dp_table[i][j] = int(line[j])
+#             return dp_table[i][j]
         
-        if j == len(line) - 1:
-            dp_table[i][j] = -1
-            return dp_table[i][j]
+#         if j == len(line) - 1:
+#             dp_table[i][j] = -1
+#             return dp_table[i][j]
         
-        max_so_far = -1
-        for k in range(j+1, len(line)):
-            candidate = dp(i-1, k)
-            if candidate > max_so_far:
-                max_so_far = candidate
-        if max_so_far == -1:
-            dp_table[i][j] = -1
-            return dp_table[i][j]
-        dp_table[i][j] = int(line[j]) * 10 **(i-1) + max_so_far
-        return dp_table[i][j]
+#         max_so_far = -1
+#         for k in range(j+1, len(line)):
+#             candidate = dp(i-1, k)
+#             if candidate > max_so_far:
+#                 max_so_far = candidate
+#         if max_so_far == -1:
+#             dp_table[i][j] = -1
+#             return dp_table[i][j]
+#         dp_table[i][j] = int(line[j]) * 10 **(i-1) + max_so_far
+#         return dp_table[i][j]
             
-    max_overall = -1
-    max_pos = -1
-    for i in range(len(line)):
-        candidate = dp(12, i)
-        if candidate > max_overall:
-            max_overall = candidate
-            max_pos = i
-    # print(max_overall)
-    # print(max_pos)
-    ans2 += max_overall
+#     max_overall = -1
+#     max_pos = -1
+#     for i in range(len(line)):
+#         candidate = dp(12, i)
+#         if candidate > max_overall:
+#             max_overall = candidate
+#             max_pos = i
+#     # print(max_overall)
+#     # print(max_pos)
+#     ans2 += 
+
+for line in lines:
+    def greedy(curr, start, remaining_digits):
+        if remaining_digits == 0:
+            return curr
+        max_candidate = -1
+        max_pos = -1
+        for i in range(start, len(line) - remaining_digits + 1):
+            if int(line[i]) > max_candidate:
+                max_candidate = int(line[i])
+                max_pos = i
+        curr = curr * 10 + max_candidate
+        return greedy(curr, max_pos + 1, remaining_digits - 1)
+    ans2 += greedy(0, 0, 12)
 print(ans2)
