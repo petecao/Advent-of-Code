@@ -18,7 +18,7 @@ for edge in edges:
         if neighbor in adj_list[edge[1]]:
             triangles.add(tuple(sorted([edge[0], edge[1], neighbor])))
             
-ans = 0a
+ans = 0
 for triangle in triangles:
     if any(node[0] == 't' for node in triangle):
         ans += 1
